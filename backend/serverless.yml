@@ -21,7 +21,7 @@ provider:
 
 functions:
 
-  Auth:
+  Auth: # An AWS API Gateway custom RS256 authorizer function
     handler: src/lambda/auth/auth0Authorizer.handler
 
   # TODO: Configure this function
@@ -31,6 +31,7 @@ functions:
       - http:
           method: get
           path: todos
+          authorizer: Auth
 
   # TODO: Configure this function
   CreateTodo:
@@ -39,6 +40,7 @@ functions:
       - http:
           method: post
           path: todos
+          authorizer: Auth
 
   # TODO: Configure this function
   UpdateTodo:
@@ -47,6 +49,7 @@ functions:
       - http:
           method: patch
           path: todos/{todoId}
+          authorizer: Auth
 
   # TODO: Configure this function
   DeleteTodo:
@@ -55,6 +58,7 @@ functions:
       - http:
           method: delete
           path: todos/{todoId}
+          authorizer: Auth
 
   # TODO: Configure this function
   GenerateUploadUrl:
@@ -63,6 +67,7 @@ functions:
       - http:
           method: post
           path: todos/{todoId}/attachment
+          authorizer: Auth
 
 resources:
   Resources:
