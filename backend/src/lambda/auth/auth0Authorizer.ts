@@ -69,7 +69,7 @@ async function verifyToken(authHeader: string): Promise<JwtPayload> {
 
   // 3. Decode the JWT and grab the kid property from the header.
   const jwtKid = jwt.header.kid // kid is the unique identifier for the key
-  console.info(`JWT Kid : ${jwtKid}`)
+  logger.info(`JWT Kid : ${jwtKid}`)
 
   // 4. Find the _signature verification_ (use=sig) key in the filtered JWKS with a matching kid property.
   const signingKey = keys
