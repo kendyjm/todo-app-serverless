@@ -33,4 +33,17 @@ export class TodosDao {
 
         return items as TodoItem[]
     }
+
+    async createTodo(newTodoItem: TodoItem): Promise<TodoItem> {
+        const result = await this.docClient
+            .put({
+                TableName: this.todosTable,
+                Item: newTodoItem
+            })
+            .promise()
+
+        logger.info(`Saved new todo item ${newTodoItem.todoId} for user ${newTodoItem.userId}`)
+        
+        return newTodoItem
+    }    
 }

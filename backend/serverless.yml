@@ -56,6 +56,11 @@ functions:
         Action:
           - dynamodb:Query
         Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_INDEX_CREATED_AT}
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource: 
+          - '*'
 
   # TODO: Configure this function
   CreateTodo:
@@ -77,9 +82,15 @@ functions:
               "application/json": CreateTodoRequestSchema          
     iamRoleStatements:
       - Effect: Allow
+        Action:  
+          - dynamodb:PutItem        
+        Resource:
+          - { "Fn::GetAtt": ["TodosDynamoDBTable", "Arn" ] }
+      - Effect: Allow
         Action:
-          - dynamodb:PutItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODOS_INDEX_CREATED_AT}          
+          - xray:PutTraceSegments
+        Resource: 
+          - '*'
 
   # TODO: Configure this function
   UpdateTodo:
@@ -131,7 +142,7 @@ resources:
         RestApiId:
           Ref: ApiGatewayRestApi              
     # TODO: Add any necessary AWS resources
-    Table:
+    TodosDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
         KeySchema: # Primary key
