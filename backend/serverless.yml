@@ -50,6 +50,7 @@ functions:
       - http:
           method: post
           path: todos
+          cors: true
           authorizer: Auth
 
   # TODO: Configure this function
