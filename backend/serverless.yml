@@ -25,6 +25,18 @@ provider:
     TODOS_TABLE: ${self:service.name}-Todos-${self:provider.stage}    
     TODOS_INDEX_CREATED_AT: ${self:service.name}-Todos-Index-CreatedAt-${self:provider.stage}
 
+custom:
+  documentation:
+    api:
+      info:
+        version: v1.0.0
+        title: TO-DO App API
+        description: Serverless application for task management
+    models:
+      - name: CreateTodoRequestSchema
+        contentType: application/json
+        schema: ${file(src/schemas/CreateTodoRequestSchema.json)}
+
 functions:
 
   Auth: # An AWS API Gateway custom RS256 authorizer function
@@ -55,6 +67,14 @@ functions:
           cors: true
           authorizer: Auth
           reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: "Create a Todo"
+            description: "Create a new Todo item"
+            tags:
+              - Todo
+              - Creation
+            requestModels:
+              "application/json": CreateTodoRequestSchema          
     iamRoleStatements:
       - Effect: Allow
         Action:
