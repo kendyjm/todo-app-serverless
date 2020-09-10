@@ -8,6 +8,10 @@ A TO-DO application using AWS Lambda and [Serverless framework](https://www.serv
 * Each TODO item can optionally have an attachment image.
 * Each user only has access to TODO items that he/she has created.
 
+## Architecture
+
+![Architecture v0](images/service-map.png "Service map")
+
 ## TODO items
 
 The application stores TODO items, and each TODO item contains the following fields:
@@ -21,6 +25,10 @@ The application stores TODO items, and each TODO item contains the following fie
 
 ## Getting Started
 
+## Prerequisites
+
+Install the serverless application `npm install -g serverless`
+
 ### Authentication
 
 To enable authentication in the application, you will have to create an [Auth0](https://auth0.com/) application and copy "domain" and "client id" to the `config.ts` file in the `client` folder.
@@ -33,7 +41,7 @@ To deploy the backend run the following commands:
 ```bash
 cd backend
 npm install
-sls deploy -v
+serverless deploy -v
 ```
 
 ### Frontend
