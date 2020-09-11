@@ -15,7 +15,7 @@ export class ImagesDao {
         private readonly urlExpiration = process.env.SIGNED_URL_EXPIRATION
     ) { }
 
-    async getUploadUrl(todoId: string): Promise<string> {
+    async getSignedUrl(todoId: string): Promise<string> {
         const signedUrl = s3.getSignedUrl('putObject', {
             Bucket: this.bucketName,
             Key: todoId,

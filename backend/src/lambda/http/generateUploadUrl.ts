@@ -2,10 +2,12 @@ import 'source-map-support/register'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 import { createLogger } from '../../utils/logger'
-import { ImagesDao } from '../../dao/ImagesDao'
+
+import { getSignedUrl, updateAttachmentUrl } from '../../business/TodosBusiness'
+import { getUserId } from '../utils'
 
 const logger = createLogger('generate-upload-url-todo')
-const imagesDao = new ImagesDao()
+
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   logger.debug("Processing generateUploadUrl event", {event})
@@ -19,10 +21,13 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     }
   }
 
-  logger.info("Getting signed URL for todo", {todoId})
+  const userId = getUserId(event)
+  logger.info("Getting signed URL for todo", {todoId, userId})
 
-  const signedUrl = await imagesDao.getUploadUrl(todoId)
+  const signedUrl: string = await getSignedUrl(todoId)
   logger.info("Got signed URL for todo", {signedUrl})
+
+  await updateAttachmentUrl(signedUrl, todoId, userId)
 
   return {
     statusCode: 200,
