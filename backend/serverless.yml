@@ -106,7 +106,8 @@ functions:
           method: patch
           path: todos/{todoId}
           authorizer: Auth
-
+          cors: true
+          
   # TODO: Configure this function
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
