@@ -1,6 +1,6 @@
 import * as AWS from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
-import { DocumentClient } from 'aws-sdk/clients/dynamodb'
+import { DocumentClient, DeleteItemOutput } from 'aws-sdk/clients/dynamodb'
 import { TodoItem } from '../models/TodoItem'
 import { createLogger } from '../utils/logger'
 
@@ -27,7 +27,7 @@ export class TodosDao {
             })
             .promise()
 
-        logger.info(`Found ${result.Count} todo items for user ${userId}`)
+        logger.info("Retrieved todo items", {userId, "count" : result.Count})
 
         const items = result.Items
 
@@ -42,8 +42,22 @@ export class TodosDao {
             })
             .promise()
 
-        logger.info(`Saved new todo item ${newTodoItem.todoId} for user ${newTodoItem.userId}`)
+        logger.info("Saved new todo item", {newTodoItem} )
         
         return newTodoItem
+    }    
+
+    async deleteTodo(todoId: string, userId: string) {
+        const deleteItem:DeleteItemOutput = await this.docClient
+            .delete({
+                TableName: this.todosTable,
+                Key: {todoId, userId},
+                ReturnValues: "ALL_OLD"
+            })
+            .promise()
+
+        const deletedTodo = deleteItem.Attributes
+
+        logger.info("Deleted todo item", {deletedTodo})    
     }    
 }
