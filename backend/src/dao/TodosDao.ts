@@ -87,4 +87,26 @@ export class TodosDao {
 
         logger.info("Updated todo item", {updatedTodo} )
     }
+
+    async updateAttachmentUrl(attachmentUrl: string, todoId: string, userId: string) {
+        const updateItem: UpdateItemOutput = await this.docClient
+            .update({
+                TableName: this.todosTable,
+                Key: {todoId, userId},
+                ReturnValues: "ALL_NEW",
+                UpdateExpression:
+                  'set #attachmentUrl = :attachmentUrl',
+                ExpressionAttributeValues: {
+                  ':attachmentUrl': attachmentUrl
+                },
+                ExpressionAttributeNames: {
+                  '#attachmentUrl': 'attachmentUrl'
+                }
+            })
+            .promise()
+
+        const updatedTodo = updateItem.Attributes
+
+        logger.info("Updated attachmentUrl of todo item", {updatedTodo} )
+    }    
 }
