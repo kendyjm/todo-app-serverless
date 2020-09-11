@@ -107,7 +107,18 @@ functions:
           path: todos/{todoId}
           authorizer: Auth
           cors: true
-          
+    iamRoleStatements:
+      - Effect: Allow
+        Action:  
+          - dynamodb:UpdateItem        
+        Resource:
+          - { "Fn::GetAtt": ["TodosDynamoDBTable", "Arn" ] }
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource: 
+          - '*'   
+                    
   # TODO: Configure this function
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler
