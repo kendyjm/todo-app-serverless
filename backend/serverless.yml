@@ -118,7 +118,7 @@ functions:
             description: "Modify an existing Todo item"
             tags:
               - Todo
-              - Modify
+              - Update
             requestModels:
               "application/json": UpdateTodoRequestSchema            
     iamRoleStatements:
@@ -168,8 +168,19 @@ functions:
           method: post
           path: todos/{todoId}/attachment
           authorizer: Auth
-          cors: true      
+          cors: true  
+          documentation:
+            summary: "Signed url and attachmentUrl update"
+            description: "Generate a signed url and update/add the attachmentUrl property to the todo"
+            tags:
+              - Todo
+              - Update                 
     iamRoleStatements:
+      - Effect: Allow
+        Action:  
+          - dynamodb:UpdateItem        
+        Resource:
+          - { "Fn::GetAtt": ["TodosDynamoDBTable", "Arn" ] }    
       - Effect: Allow
         Action:
           - s3:PutObject
