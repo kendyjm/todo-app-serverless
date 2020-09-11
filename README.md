@@ -8,9 +8,9 @@ A TO-DO application using AWS Lambda and [Serverless framework](https://www.serv
 * Each TODO item can optionally have an attachment image.
 * Each user only has access to TODO items that he/she has created.
 
-## Architecture
+## Service Map
 
-![Architecture v0](images/service-map.png "Service map")
+![Service map](images/service-map.png "Service map")
 
 ## TODO items
 
