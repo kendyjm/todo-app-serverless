@@ -27,7 +27,9 @@ The application stores TODO items, and each TODO item contains the following fie
 
 ## Prerequisites
 
-Install the serverless application `npm install -g serverless`
+* Opened [AWS](https://aws.amazon.com/) account
+* [_npm_](https://nodejs.org/en/) installed
+* [_Serverless_](https://www.serverless.com/framework/docs/getting-started/) installed
 
 ### Authentication
 
