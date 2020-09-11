@@ -36,6 +36,9 @@ custom:
       - name: CreateTodoRequestSchema
         contentType: application/json
         schema: ${file(src/schemas/CreateTodoRequestSchema.json)}
+      - name: UpdateTodoRequestSchema
+        contentType: application/json
+        schema: ${file(src/schemas/UpdateTodoRequestSchema.json)}
 
 functions:
 
@@ -106,7 +109,28 @@ functions:
           method: patch
           path: todos/{todoId}
           authorizer: Auth
-
+          cors: true
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            summary: "Update a Todo"
+            description: "Modify an existing Todo item"
+            tags:
+              - Todo
+              - Modify
+            requestModels:
+              "application/json": UpdateTodoRequestSchema            
+    iamRoleStatements:
+      - Effect: Allow
+        Action:  
+          - dynamodb:UpdateItem        
+        Resource:
+          - { "Fn::GetAtt": ["TodosDynamoDBTable", "Arn" ] }
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource: 
+          - '*'   
+                    
   # TODO: Configure this function
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler

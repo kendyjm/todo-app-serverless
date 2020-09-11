@@ -1,8 +1,9 @@
 import * as AWS from 'aws-sdk'
 import * as AWSXRay from 'aws-xray-sdk'
-import { DocumentClient, DeleteItemOutput } from 'aws-sdk/clients/dynamodb'
+import { DocumentClient, DeleteItemOutput, UpdateItemOutput } from 'aws-sdk/clients/dynamodb'
 import { TodoItem } from '../models/TodoItem'
 import { createLogger } from '../utils/logger'
+import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const logger = createLogger('todos-dao')
 
@@ -59,5 +60,31 @@ export class TodosDao {
         const deletedTodo = deleteItem.Attributes
 
         logger.info("Deleted todo item", {deletedTodo})    
-    }    
+    }  
+    
+    async updateTodo(todoId: string, userId: string, updatedProperties: UpdateTodoRequest) {
+        const updateItem: UpdateItemOutput= await this.docClient
+            .update({
+                TableName: this.todosTable,
+                Key: {todoId, userId},
+                ReturnValues: "ALL_NEW",
+                UpdateExpression:
+                  'set #name = :name, #dueDate = :duedate, #done = :done',
+                ExpressionAttributeValues: {
+                  ':name': updatedProperties.name,
+                  ':duedate': updatedProperties.dueDate,
+                  ':done': updatedProperties.done
+                },
+                ExpressionAttributeNames: {
+                  '#name': 'name',
+                  '#dueDate': 'dueDate',
+                  '#done': 'done'
+                }
+            })
+            .promise()
+
+        const updatedTodo = updateItem.Attributes
+
+        logger.info("Updated todo item", {updatedTodo} )
+    }
 }
