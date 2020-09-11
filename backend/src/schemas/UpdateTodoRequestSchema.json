@@ -7,10 +7,14 @@
     },
     "dueDate": {
       "type": "string"
+    },
+    "done": {
+      "type": "boolean"
     }
   },
   "required": [
     "name",
-    "dueDate"
+    "dueDate",
+    "done"
   ]
 }
