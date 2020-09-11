@@ -1,5 +1,3 @@
-import { CreateTodoRequest } from "../requests/CreateTodoRequest";
-
 export interface TodoItem {
   userId: string
   todoId: string
