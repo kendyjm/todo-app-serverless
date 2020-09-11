@@ -166,6 +166,7 @@ functions:
           method: post
           path: todos/{todoId}/attachment
           authorizer: Auth
+          cors: true          
 
 resources:
   Resources:
