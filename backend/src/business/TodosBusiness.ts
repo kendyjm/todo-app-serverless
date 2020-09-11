@@ -3,6 +3,7 @@ import { TodosDao } from '../dao/TodosDao'
 import { createLogger } from '../utils/logger'
 import { CreateTodoRequest } from '../requests/CreateTodoRequest'
 import * as uuid from 'uuid'
+import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const logger = createLogger('todo-business')
 const todoDao = new TodosDao()
@@ -16,6 +17,11 @@ export async function getTodos(userId: string): Promise<TodoItem[]> {
     return await todoDao.getTodos(userId)
 }
 
+/**
+ * Create a TODO
+ * @param newTodoRequest properties for this new TODO
+ * @param userId id of the todo's owner
+ */
 export async function createTodo(newTodoRequest: CreateTodoRequest, userId: string): Promise<TodoItem> {
     const todoId = uuid.v4()
     logger.info('Create TODO with generated uuid', {todoId})
@@ -39,4 +45,15 @@ export async function createTodo(newTodoRequest: CreateTodoRequest, userId: stri
  */
 export async function deleteTodo(todoId: string, userId: string) {
     return await todoDao.deleteTodo(todoId, userId)
+}
+
+
+/**
+ * Update a TODO by its id
+ * @param todoId id of the todo to update
+ * @param userId id of the todo's owner
+ * @param updatedTodo new content for this TODO
+ */
+export async function updateTodo(todoId: string, userId: string, updatedTodo: UpdateTodoRequest) {
+    return await todoDao.updateTodo(todoId, userId, updatedTodo)
 }
