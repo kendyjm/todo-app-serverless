@@ -7,6 +7,7 @@ import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const logger = createLogger('todo-business')
 const todoDao = new TodosDao()
+const bucketName = process.env.TODOS_IMAGES_BUCKET
 
 /**
  * Get all the TODOs of a user
@@ -32,6 +33,7 @@ export async function createTodo(newTodoRequest: CreateTodoRequest, userId: stri
         createdAt: new Date().toISOString(),
         ...newTodoRequest,
         done: false,
+        attachmentUrl: `https://${bucketName}.s3.amazonaws.com/${todoId}`
       }
 
       

@@ -24,7 +24,7 @@ provider:
   environment:
     TODOS_TABLE: ${self:service.name}-Todos-${self:provider.stage}    
     TODOS_INDEX_CREATED_AT: ${self:service.name}-Todos-Index-CreatedAt-${self:provider.stage}
-    TODOS_IMAGES_BUCKET: ${self:service.name}-Todos-images-${self:provider.stage}
+    TODOS_IMAGES_BUCKET: ${self:service.name}-todos-images-${self:provider.stage}
     SIGNED_URL_EXPIRATION: 300
 
 custom:
@@ -168,7 +168,18 @@ functions:
           method: post
           path: todos/{todoId}/attachment
           authorizer: Auth
-          cors: true          
+          cors: true      
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - s3:PutObject
+          - s3:GetObject
+        Resource: arn:aws:s3:::${self:provider.environment.TODOS_IMAGES_BUCKET}/*       
+      - Effect: Allow
+        Action:
+          - xray:PutTraceSegments
+        Resource: 
+          - '*'                
 
 resources:
   Resources:
@@ -179,7 +190,7 @@ resources:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,DELETE,PACTH'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,DELETE,PATCH,PUT'"
         ResponseType: DEFAULT_4XX
         RestApiId:
           Ref: ApiGatewayRestApi    
@@ -190,7 +201,7 @@ resources:
         ResponseParameters:
           gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
           gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,DELETE,PACTH'"
+          gatewayresponse.header.Access-Control-Allow-Methods: "'GET,OPTIONS,POST,DELETE,PATCH,PUT'"
         ResponseType: DEFAULT_5XX
         RestApiId:
           Ref: ApiGatewayRestApi              
@@ -260,5 +271,5 @@ resources:
               Effect: Allow
               Principal: '*'
               Action: 's3:GetObject'
-              Resource: 'arn:aws:s3:::${self:provider.environment.TODO_IMAGES_S3_BUCKET}/*'
+              Resource: 'arn:aws:s3:::${self:provider.environment.TODOS_IMAGES_BUCKET}/*'
         Bucket: !Ref AttachmentsBucket        
