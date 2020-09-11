@@ -31,3 +31,12 @@ export async function createTodo(newTodoRequest: CreateTodoRequest, userId: stri
       
     return await todoDao.createTodo(newTodoItem)
 }
+
+/**
+ * Remove a TODO by its id
+ * @param todoId id of the todo to delete
+ * @param userId id of the todo's owner
+ */
+export async function deleteTodo(todoId: string, userId: string) {
+    return await todoDao.deleteTodo(todoId, userId)
+}
