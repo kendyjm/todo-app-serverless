@@ -7,6 +7,7 @@ import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
 
 const logger = createLogger('todo-business')
 const todoDao = new TodosDao()
+const bucketName = process.env.TODOS_IMAGES_BUCKET
 
 /**
  * Get all the TODOs of a user
@@ -32,6 +33,7 @@ export async function createTodo(newTodoRequest: CreateTodoRequest, userId: stri
         createdAt: new Date().toISOString(),
         ...newTodoRequest,
         done: false,
+        attachmentUrl: `https://${bucketName}.s3.amazonaws.com/${todoId}`
       }
 
       
@@ -52,8 +54,8 @@ export async function deleteTodo(todoId: string, userId: string) {
  * Update a TODO by its id
  * @param todoId id of the todo to update
  * @param userId id of the todo's owner
- * @param updatedTodo new content for this TODO
+ * @param updatedProperties new content for this TODO
  */
-export async function updateTodo(todoId: string, userId: string, updatedTodo: UpdateTodoRequest) {
-    return await todoDao.updateTodo(todoId, userId, updatedTodo)
+export async function updateTodo(todoId: string, userId: string, updatedProperties: UpdateTodoRequest) {
+    return await todoDao.updateTodo(todoId, userId, updatedProperties)
 }

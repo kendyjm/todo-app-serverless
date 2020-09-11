@@ -36,7 +36,7 @@ export class TodosDao {
     }
 
     async createTodo(newTodoItem: TodoItem): Promise<TodoItem> {
-        const result = await this.docClient
+        await this.docClient
             .put({
                 TableName: this.todosTable,
                 Item: newTodoItem
