@@ -115,7 +115,13 @@ functions:
           method: delete
           path: todos/{todoId}
           authorizer: Auth
-          cors: true          
+          cors: true
+          documentation:
+            summary: "Delete a Todo"
+            description: "Delete a Todo item from its id"
+            tags:
+              - Todo
+              - Delete                    
 
   # TODO: Configure this function
   GenerateUploadUrl:
