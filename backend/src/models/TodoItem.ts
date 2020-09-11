@@ -1,8 +1,10 @@
 import { CreateTodoRequest } from "../requests/CreateTodoRequest";
 
-export interface TodoItem extends CreateTodoRequest {
+export interface TodoItem {
   userId: string
   todoId: string
+  name: string
+  dueDate: string  
   createdAt: string
   done: boolean
   attachmentUrl?: string
