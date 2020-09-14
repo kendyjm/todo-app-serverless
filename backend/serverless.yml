@@ -20,6 +20,9 @@ provider:
   tracing: # Enable X-Ray Tracing
     lambda: true
     apiGateway: true
+    
+  logs:
+    restApi: true # enable API Gateway logs
 
   environment:
     TODOS_TABLE: ${self:service.name}-Todos-${self:provider.stage}    
