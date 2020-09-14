@@ -1,6 +1,6 @@
-# Serverless TO-DO App - Tasks list management
+# ToDo - Tasks list management
 
-A TO-DO application using AWS Lambda and [Serverless framework](https://www.serverless.com/).
+A TO-DO application built with [Serverless framework](https://www.serverless.com/) and running on AWS Serverless platform.
 
 ## Functionality of the application
 
@@ -58,6 +58,8 @@ npm run start
 ```
 
 This will start a development server with the React application that will interact with the serverless TODO application.
+
+![UI](images/front.png "UI")
 
 ### Postman collection
 
