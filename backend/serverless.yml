@@ -1,3 +1,5 @@
+org: kendyjm
+app: serverless-todo-app
 service:
   name: serverless-todo-app
 
